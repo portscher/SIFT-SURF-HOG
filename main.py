@@ -1,5 +1,5 @@
 import utils
-import surf
+import feature_extraction
 import os.path
 import cv2
 
@@ -26,8 +26,9 @@ def main():
     sushi_folder = 'img/sushi'
     sushi_training_images, sushi_test_images = utils.load_set_of_images(sushi_folder, os.listdir(sushi_folder))
 
-    kp, des = surf.apply_surf(sushi_training_images[0])
-    images, all_descriptors = surf.get_class_descriptors(sushi_training_images)
+    kp, des = feature_extraction.apply_surf(sushi_training_images[0])
+    images, all_descriptors = feature_extraction.get_class_descriptors(sushi_training_images,
+                                                                       feature_extraction.apply_surf)
 
     result = sushi_training_images[0].copy()
     result = cv2.drawKeypoints(result, kp, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)

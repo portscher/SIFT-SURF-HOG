@@ -2,8 +2,12 @@ import cv2
 import os.path
 
 
-# reads an image in gray scale, resizes it and normalizes it
 def load_image(image_path):
+    """
+    loads an image
+    :param image_path: location of the image
+    :return: resized and normalized image in grayscale
+    """
     while not os.path.isfile(image_path):
         pass
 
@@ -13,10 +17,13 @@ def load_image(image_path):
     return img
 
 
-# loads a whole set of images and returns a tuple containing:
-# one list of all training images (80% of all)
-# one list of all testing images (20% of all)
 def load_set_of_images(folder_name, file_names):
+    """
+    loads a whole set of images
+    :param folder_name: Name of the folder that contains the images
+    :param file_names: List of the files to be loaded
+    :return: one list of all training images (80% of all), one list of all testing images (20% of all)
+    """
     images = [load_image(os.path.join(folder_name, file_name)) for file_name in file_names]
 
     training_size = int(len(images) * 0.8)
