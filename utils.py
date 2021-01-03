@@ -1,6 +1,7 @@
-import cv2
 import os.path
 import random
+
+import cv2
 
 
 def load_image(image_path):
@@ -18,22 +19,28 @@ def load_image(image_path):
     return img
 
 
-def load_set_of_images(folder_name, file_names):
+def load_data(folders):
     """
-    loads a whole set of images, in random order
-    :param folder_name: Name of the folder that contains the images
-    :param file_names: List of the files to be loaded
-    :return: one list of all training images (80% of all), one list of all testing images (20% of all)
+    loads a whole set of images, in random order, and labels them according to their image class
+    :param folders: Name of the folder that contains the images
+    :return: 2 lists, each containing key value pairs (image, class_id)
+            one list of all training images (80% of all)
+            one list of all testing images (20% of all)
     """
-    images = [load_image(os.path.join(folder_name, file_name)) for file_name in file_names]
-    random.shuffle(images)
+    train_set = []
+    test_set = []
+    class_id = 0
 
-    training_size = int(len(images) * 0.8)
+    for class_folder in folders:
+        image_set = os.listdir("img/" + class_folder)
+        labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_id) for image in image_set]
+        random.shuffle(labelled_images)
+        training_size = int(len(labelled_images) * 0.8)
+        train_set.extend(labelled_images[- training_size:])
+        test_set.extend(labelled_images[: - training_size or None])
+        class_id += 1
 
-    train_set = images[- training_size:]
-    test_set = images[: - training_size or None]
-
-    print("Loaded " + str(len(images)) + " images from " + folder_name + ", " + str(
-        training_size) + " for training and " + str(len(images) - training_size) + " for testing.")
+    print("Loaded " + str(len(train_set)) + " images for training and " + str(
+        len(test_set)) + " images for testing. Categories: " + ', '.join(folders))
 
     return train_set, test_set
