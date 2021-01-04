@@ -14,7 +14,7 @@ def load_image(image_path):
         pass
 
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    img = cv2.resize(img, (350, 350))
+    img = cv2.resize(img, (340, 350))
     cv2.normalize(img, img, 0, 255, cv2.NORM_MINMAX)
     return img
 
@@ -29,16 +29,14 @@ def load_data(folders):
     """
     train_set = []
     test_set = []
-    class_id = 0
 
     for class_folder in folders:
         image_set = os.listdir("img/" + class_folder)
-        labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_id) for image in image_set]
+        labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_folder) for image in image_set]
         random.shuffle(labelled_images)
         training_size = int(len(labelled_images) * 0.8)
         train_set.extend(labelled_images[- training_size:])
         test_set.extend(labelled_images[: - training_size or None])
-        class_id += 1
 
     print("Loaded " + str(len(train_set)) + " images for training and " + str(
         len(test_set)) + " images for testing. Categories: " + ', '.join(folders))
