@@ -28,3 +28,22 @@ def apply_hog(img):
     Apply HoG to the image
     """
     #  TODO
+
+
+def get_descriptors_and_labels(func, img_set):
+    """
+    Applies a feature extraction algorithm on an image set.
+    :param func: The respective feature extraction function
+    :param img_set: The set on which the function is applied
+    :return: Two lists of the same length: the descriptors and labels
+    """
+    descriptors = []
+    labels = []
+
+    for (img, lbl) in img_set:
+        kp, des = func(img)
+        for d in des:
+            descriptors.append(d)
+            labels.append(lbl)
+
+    return descriptors, labels

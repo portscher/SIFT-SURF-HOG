@@ -1,12 +1,11 @@
 import os.path
+import time
 
 from sklearn.metrics import classification_report
 from sklearn.svm import LinearSVC
 
 import feature_extraction
 import utils
-
-import time
 
 
 def main():
@@ -15,31 +14,21 @@ def main():
 
     # extract features from training images
     print("Using SURF to extract features from the images...")
-    train_descriptors = []
-    train_labels = []
-    for (img, lbl) in train_set:
-        kp, des = feature_extraction.apply_surf(img)
-        for d in des:
-            train_descriptors.append(d)
-            train_labels.append(lbl)
+
+    train_descriptors, train_labels = feature_extraction.get_descriptors_and_labels(feature_extraction.apply_surf, train_set)
 
     print("Training the model...")
     start = time.time()
+
     svm = LinearSVC()
     svm.fit(train_descriptors, train_labels)
+
     end = time.time()
 
     print("Training the model took " + str(end - start) + " seconds.")
 
     # extract features from test images
-    test_descriptors = []
-    test_labels = []
-
-    for (img, lbl) in test_set:
-        kp, des = feature_extraction.apply_surf(img)
-        for d in des:
-            test_descriptors.append(d)
-            test_labels.append(lbl)
+    test_descriptors, test_labels = feature_extraction.get_descriptors_and_labels(feature_extraction.apply_surf, test_set)
 
     # test the model and print report
     predictions = svm.predict(test_descriptors)
