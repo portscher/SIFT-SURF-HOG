@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 
 def apply_surf(img, hessian=500, octave=4, octave_layers=2, ext=False):
