@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import os.path
 import time
+import sys
+import argparse
 
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -9,7 +11,6 @@ from sklearn.svm import LinearSVC
 
 import feature_extraction
 import utils
-import argparse
 
 from sift import SiftTransformer
 
@@ -66,8 +67,13 @@ def main():
     print("Training the model took " + str(end - start) + " seconds.")
 
     # TODO use cross_validate
-    print("score: " + str(pipeline.score(X_test, y_test)))
+    print("\n====> average score: " + str(pipeline.score(X_test, y_test)) + "\n")
+
+    start = time.time()
     predictions = pipeline.predict(X_test)
+    end = time.time()
+    print("Predicting and feature extraction took " + str(end - start) + " seconds. \n\n")
+
     print(classification_report(y_test, predictions))
 
     sys.exit(0)
