@@ -1,39 +1,76 @@
+#!/usr/bin/env python3
 import os.path
 import time
 
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report
 from sklearn.svm import LinearSVC
 
 import feature_extraction
 import utils
+import argparse
+
+from sift import SiftTransformer
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("method", help="Method to use. Available: SIFT, SURF, HoG")
+    parser.add_argument('-c','--classes', nargs='+', help='<Required> Which classes to load', required=True)
+    parser.add_argument('-k','--k', type=int, default=100, help='Define number of clusters')
+    # insert more meta-parameters here
+
+    args = parser.parse_args()
+    print(args.method)
+
+    if not args.method:
+        parser.print_help()
+        sys.exit()
+
     # load images
-    train_set, test_set = utils.load_data(os.listdir("img"))
+    print("Loading classes " + ', '.join(args.classes))
+    images = utils.load_images(args.classes)
+    X, Y = utils.separate_data(images)
 
     # extract features from training images
-    print("Using SURF to extract features from the images...")
+    print("Using "+ args.method +" to extract features from the images...")
 
-    train_descriptors, train_labels = feature_extraction.get_descriptors_and_labels(feature_extraction.apply_surf, train_set)
+    # TODO for now, only test_split
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.4, random_state=0)
 
-    print("Training the model...")
+    feat = None
+    if args.method.lower() == 'sift':
+        feat = SiftTransformer(args.k)
+    elif args.method.lower() == 'suft':
+        raise Exception('TODO', 'Not yet implemented')
+        feat = SiftTransformer(args.k)
+    elif args.method.lower() == 'hog':
+        raise Exception('TODO', 'Not yet implemented')
+        feat = SiftTransformer(args.k)
+    else:
+        raise Exception('No method', 'This method is not recognized')
+
+
+    pipeline = Pipeline([
+        ('feat', feat),
+        ('svm', LinearSVC())
+    ])
+
+    print("Training with " + str(len(X_train)) + " samples")
     start = time.time()
 
-    svm = LinearSVC()
-    svm.fit(train_descriptors, train_labels)
+    pipeline.fit(X_train, y_train)
 
     end = time.time()
-
     print("Training the model took " + str(end - start) + " seconds.")
 
-    # extract features from test images
-    test_descriptors, test_labels = feature_extraction.get_descriptors_and_labels(feature_extraction.apply_surf, test_set)
+    # TODO use cross_validate
+    print("score: " + str(pipeline.score(X_test, y_test)))
+    predictions = pipeline.predict(X_test)
+    print(classification_report(y_test, predictions))
 
-    # test the model and print report
-    predictions = svm.predict(test_descriptors)
-    print(classification_report(test_labels, predictions))
-
+    sys.exit(0)
 
 if __name__ == "__main__":
     main()
