@@ -2,10 +2,8 @@
 \documentclass{scrartcl}
 \usepackage[utf8]{inputenc}
 \usepackage{color}
-\usepackage{listings}
 \usepackage{csquotes}
 \usepackage{graphicx}
-\usepackage{tikz}
 \usepackage{enumitem}
 \usepackage{lscape}
 \usepackage{booktabs}
@@ -14,38 +12,7 @@
 \usepackage{xcolor}
 
 
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,
-    urlcolor=blue,
-}
-
 \setcounter{secnumdepth}{0}
-
-\definecolor{mygray}{rgb}{0.4,0.4,0.4}
-\definecolor{mygreen}{rgb}{0,0.8,0.6}
-\definecolor{myorange}{rgb}{1.0,0.4,0}
-\definecolor{mymauve}{rgb}{0.8,0,0.7}
-\definecolor{mymint}{rgb}{0.7, 0.85, 0.85}
-
-% Define colors for listings
-\lstset{
-	backgroundcolor=\color{mymint},   % choose the background color;
-	basicstyle=\footnotesize\ttfamily,  % the size of the code fonts
-	breaklines=true,                 % sets automatic line breaking
-	commentstyle=\color{mygreen},    % comment style
-	firstnumber=1,                   % start line enumeration with line 1
-	keepspaces=true,                 % keeps spaces in text
-	keywordstyle=\color{orange},     % keyword style
-	language=C                       % the language of the code
-	numbers=left,                    % where to put the line-numbers
-	numbersep=5pt,                   % how far the line-numbers are from the code
-	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-	showstringspaces=false,          % underline spaces within strings only
-	stepnumber=1,                    % the step between two line-numbers
-	stringstyle=\color{black}        % string literal style
-}
 
 \title{Image classification with SVM}
 \author{Andrea Portscher, Juan Pablo Stumpf, Philip Wille}
@@ -53,9 +20,26 @@
 \begin{document}
 \maketitle
 
+\section{Introduction}
+For this project we implemented an image classifier using three different feature extraction approaches: Scale-invariant feature transform (SIFT), Speeded up robust features (SURF) and Histogram of Gradients (HOG). First, we prepared an image dataset containing five different image classes, each comprising training and testing data. After extracting features using the above algorithms, we trained a Support-Vector Machine (SVM) and testetd, how well it was able to classify images.
+\section{Approaches}
+In the following section we will shortly explain the functionality of the feature extraction algorithms we applied to the dataset - namely SIFT, SURF and HOG.
+In general, feature extraction algorithms work in three steps\cite{bay2006}:
+\begin{enumerate}
+  \item They select interest points at distinctive locations, such as corners.
+  \item The neighbourhood of the interest points is represented by a feature vector.
+  \item The descriptor vector are matched between different images.
+\end{enumerate}
 
+\subsection{SIFT}
+\subsection{SURF}
 
-\end{document}
+\subsection{HOG}
+\section{Implementation}
+\subsection{Data}
+\section{Discussion of Results}
+
 
 \bibliographystyle{unsrt}
 \bibliography{sources}
+\end{document}
