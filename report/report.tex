@@ -28,17 +28,25 @@ In general, feature extraction algorithms work in three steps\cite{bay2006}:
 \begin{enumerate}
   \item They select interest points at distinctive locations, such as corners.
   \item The neighbourhood of the interest points is represented by a feature vector.
-  \item The descriptor vector are matched between different images.
+  \item The descriptor vectors are matched between different images.
 \end{enumerate}
 
 \subsection{SIFT}
 \subsection{SURF}
 
+
+
 \subsection{HOG}
 \section{Implementation}
 \subsection{Data}
-\section{Discussion of Results}
+The image data we used stems from the Caltech-256 Image Set\footnote{http://www.vision.caltech.edu/Image\_Datasets/Caltech256/, accessed on the 22nd of December 2020}, which consists of 256 sets of images of a certain class. We randomly selected 5 of these, namely: cactus, dice, raccoon, spaghetti and sushi. The preaparation of the image data was comprised of the following steps, which we implemented in the file \texttt{utils.py}:
+\begin{itemize}
+  \item All images were resized to the same size, converted to grayscale and normalized (which removes noise from the image).
+  \item All images are associated with a label (their image class).
+  \item The images are split into a training set (80\% of images per class) and a testing set (20\% of images).
+\end{itemize}
 
+\section{Discussion of Results}
 
 \bibliographystyle{unsrt}
 \bibliography{sources}
