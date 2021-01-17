@@ -1,1 +1,21 @@
 __pycache__
+
+## Latex files:
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.gz
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+
+## Can be generated from .tex file
+*.pdf
