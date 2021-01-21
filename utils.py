@@ -32,7 +32,8 @@ def load_data(folders):
 
     for class_folder in folders:
         image_set = os.listdir("img/" + class_folder)
-        labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_folder) for image in image_set]
+        labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_folder) for image in
+                           image_set]
         random.shuffle(labelled_images)
         training_size = int(len(labelled_images) * 0.8)
         train_set.extend(labelled_images[- training_size:])
@@ -43,9 +44,10 @@ def load_data(folders):
 
     return train_set, test_set
 
+
 def load_images(classes):
     """
-    load all images of the given classes. each class correspond to a folder in the img folder.
+    load all images of the given classes. each class corresponds to a folder in /img folder.
     :return: a list, containing key value pairs (class_id, image)
     """
 
@@ -53,50 +55,30 @@ def load_images(classes):
     for class_folder in classes:
         image_set = os.listdir("img/" + class_folder)
         labelled_images = [(class_folder, load_image("img/" + os.path.join(class_folder, image)))
-                for image in image_set]
+                           for image in image_set]
         images.extend(labelled_images)
 
     print("Loaded " + str(len(images)) + " images of the classes: " + ', '.join(classes))
 
     return images
 
-def encode_classes(classid):
-    """
-    encode the class-id into an integer
-    :param classid: name of the class
-    :return: an integer identifier for that class
-    """
-
-    val = 0
-    if classid == 'cactus':
-        val = 0
-    if classid == 'dice':
-        val = 1
-    if classid == 'raccoon':
-        val = 2
-    if classid == 'spaghetti':
-        val = 3
-    if classid == 'sushi':
-        val = 4
-
-    return val
 
 def separate_data(images):
     """
-    :param images: a list tuple (classid, image)
+    :param images: a list tuple (class_id, image)
     :return: X and Y
+    TODO what's happening here?
     """
     Y, X = zip(*images)
 
-    Y = map(encode_classes, Y)
+    return X, Y
 
-    return X, list(Y)
 
-def join_data(X, Y):
+def join_data(data, labels):
     """
-    :param X: data
-    :param Y: labels
-    :return: list of tuple (Y, X)
+    :param data
+    :param labels
+    :return: list of tuples
     """
 
-    return zip(Y, X)
+    return zip(labels, data)
