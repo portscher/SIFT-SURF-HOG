@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
-import os.path
-import time
-import sys
 import argparse
+import sys
+import time
 
+import cv2
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import classification_report
 from sklearn.svm import LinearSVC
 
-import feature_extraction
 import utils
-
-from sift import SiftTransformer
+from sift import Transformer
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("method", help="Method to use. Available: SIFT, SURF, HoG")
-    parser.add_argument('-c','--classes', nargs='+', help='<Required> Which classes to load', required=True)
-    parser.add_argument('-k','--k', type=int, default=100, help='Define number of clusters')
+    parser.add_argument('-c', '--classes', nargs='+', help='<Required> Which classes to load', required=True)
+    parser.add_argument('-k', '--k', type=int, default=100, help='Define number of clusters')
     # insert more meta-parameters here
 
     args = parser.parse_args()
@@ -35,27 +33,26 @@ def main():
     X, Y = utils.separate_data(images)
 
     # extract features from training images
-    print("Using "+ args.method +" to extract features from the images...")
+    print("Using " + args.method + " to extract features from the images...")
 
     # TODO for now, only test_split
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.4, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
 
     feat = None
     if args.method.lower() == 'sift':
-        feat = SiftTransformer(args.k)
-    elif args.method.lower() == 'suft':
-        raise Exception('TODO', 'Not yet implemented')
-        feat = SiftTransformer(args.k)
+        feat = Transformer(args.k, cv2.SIFT_create)
+    elif args.method.lower() == 'surf':
+        feat = Transformer(args.k, cv2.xfeatures2d.SURF_create)
     elif args.method.lower() == 'hog':
         raise Exception('TODO', 'Not yet implemented')
-        feat = SiftTransformer(args.k)
+        feat = Transformer(args.k)
     else:
         raise Exception('No method', 'This method is not recognized')
-
 
     pipeline = Pipeline([
         ('feat', feat),
         ('svm', LinearSVC())
+
     ])
 
     print("Training with " + str(len(X_train)) + " samples")
@@ -77,6 +74,7 @@ def main():
     print(classification_report(y_test, predictions))
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
