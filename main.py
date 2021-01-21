@@ -30,13 +30,13 @@ def main():
     # load images
     print("Loading classes " + ', '.join(args.classes))
     images = utils.load_images(args.classes)
-    X, Y = utils.separate_data(images)
+    X, y = utils.separate_data(images)
 
     # extract features from training images
     print("Using " + args.method + " to extract features from the images...")
 
     # TODO for now, only test_split
-    X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
     feat = None
     if args.method.lower() == 'sift':

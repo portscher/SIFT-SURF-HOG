@@ -54,7 +54,7 @@ def load_images(classes):
     images = []
     for class_folder in classes:
         image_set = os.listdir("img/" + class_folder)
-        labelled_images = [(class_folder, load_image("img/" + os.path.join(class_folder, image)))
+        labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_folder)
                            for image in image_set]
         images.extend(labelled_images)
 
@@ -67,11 +67,8 @@ def separate_data(images):
     """
     :param images: a list tuple (class_id, image)
     :return: X and Y
-    TODO what's happening here?
     """
-    Y, X = zip(*images)
-
-    return X, Y
+    return zip(*images)
 
 
 def join_data(data, labels):
