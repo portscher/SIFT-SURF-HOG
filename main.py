@@ -51,8 +51,7 @@ def main():
 
     pipeline = Pipeline([
         ('feat', feat),
-        ('svm', LinearSVC())
-
+        ('svm', LinearSVC(max_iter=50000))  # ... set number of iterations higher than default (1000)
     ])
 
     print("Training with " + str(len(X_train)) + " samples")

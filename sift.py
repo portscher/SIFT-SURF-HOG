@@ -9,7 +9,7 @@ class Transformer(BaseEstimator, TransformerMixin):
         super(Transformer, self).__init__()
         self.sift = create_detector()
         self.k = cluster_k
-        self.cluster = MiniBatchKMeans(n_clusters=cluster_k, random_state=0, batch_size=6)
+        self.cluster = MiniBatchKMeans(n_clusters=cluster_k, init_size=3 * cluster_k, random_state=0, batch_size=6)
         self.features = []
 
     def fit(self, X, y=None, **kwargs):
