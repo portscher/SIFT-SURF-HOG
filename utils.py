@@ -13,9 +13,11 @@ def load_image(image_path):
     while not os.path.isfile(image_path):
         pass
 
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    img = cv2.imread(image_path)
     img = cv2.resize(img, (340, 350))
+    cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     cv2.normalize(img, img, 0, 255, cv2.NORM_MINMAX)
+    img = cv2.GaussianBlur(img, (5, 5), 0)
     return img
 
 
