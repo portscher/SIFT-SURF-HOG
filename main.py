@@ -10,12 +10,12 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 
 import utils
-from sift import Transformer
+from detect import Transformer
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("method", help="Method to use. Available: SIFT, SURF, HoG")
+    parser.add_argument("method", help="Method to use. Available: SIFT, SURF, HOG")
     parser.add_argument('-c', '--classes', nargs='+', help='<Required> Which classes to load', required=True)
     parser.add_argument('-k', '--k', type=int, default=100, help='Define number of clusters')
     # insert more meta-parameters here
@@ -51,7 +51,7 @@ def main():
 
     pipeline = Pipeline([
         ('feat', feat),
-        ('svm', LinearSVC(max_iter=50000))  # ... set number of iterations higher than default (1000)
+        ('svm', LinearSVC(max_iter=100000))  # ... set number of iterations higher than default (1000)
     ])
 
     print("Training with " + str(len(X_train)) + " samples")

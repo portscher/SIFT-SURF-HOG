@@ -7,7 +7,7 @@ class Transformer(BaseEstimator, TransformerMixin):
 
     def __init__(self, cluster_k, create_detector):
         super(Transformer, self).__init__()
-        self.sift = create_detector()
+        self.detector = create_detector()
         self.k = cluster_k
         self.cluster = MiniBatchKMeans(n_clusters=cluster_k, init_size=3 * cluster_k, random_state=0, batch_size=6)
         self.features = []
@@ -23,7 +23,7 @@ class Transformer(BaseEstimator, TransformerMixin):
         print("Identifying descriptors..")
         descriptors = []
         for img in X:
-            key, desc = self.sift.detectAndCompute(img, None)
+            key, desc = self.detector.detectAndCompute(img, None)
             descriptors.append(desc)
 
         descs = descriptors[0]
@@ -48,7 +48,7 @@ class Transformer(BaseEstimator, TransformerMixin):
         print("Calculating histograms for " + str(len(X)) + " items.")
         histo_all = []
         for img in X:
-            key, desc = self.sift.detectAndCompute(img, None)
+            key, desc = self.detector.detectAndCompute(img, None)
 
             histo = np.zeros(self.k)
             nkp = np.size(len(key))
@@ -77,7 +77,7 @@ class Transformer(BaseEstimator, TransformerMixin):
         histo_all = []
 
         for img in images:
-            key, desc = self.sift.detectAndCompute(img, None)
+            key, desc = self.detector.detectAndCompute(img, None)
             histo = np.zeros(self.k)
             nkp = np.size(len(desc))
 
