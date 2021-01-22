@@ -3,7 +3,6 @@ import argparse
 import sys
 import time
 
-import cv2
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -57,9 +56,9 @@ def main():
 
     feat = None
     if args.method.lower() == 'sift':
-        feat = Transformer(args.k, cv2.SIFT_create)
+        feat = Transformer(args.k, args.method.lower())
     elif args.method.lower() == 'surf':
-        feat = Transformer(args.k, cv2.xfeatures2d.SURF_create)
+        feat = Transformer(args.k, args.method.lower())
     elif args.method.lower() == 'hog':
         raise Exception('TODO', 'Not yet implemented')
         feat = Transformer(args.k)

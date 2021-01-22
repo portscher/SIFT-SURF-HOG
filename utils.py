@@ -55,7 +55,7 @@ def load_images(base, classes):
     images = []
     for class_folder in classes:
         image_set = os.listdir(base + "img/" + class_folder)
-        labelled_images = [(class_folder, load_image("img/" + os.path.join(class_folder, image)))
+        labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_folder)
                 for image in image_set]
         images.extend(labelled_images)
 

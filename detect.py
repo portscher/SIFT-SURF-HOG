@@ -1,13 +1,21 @@
 import numpy as np
+import cv2
 from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.cluster import MiniBatchKMeans
 
 
 class Transformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, cluster_k, create_detector):
+    def __init__(self, cluster_k, detector_str):
         super(Transformer, self).__init__()
-        self.detector = create_detector()
+
+        # we need this dummy variable!
+        self.detector_str = detector_str
+
+        if detector_str.lower() == 'sift':
+            self.detector = cv2.SIFT_create()
+        elif detector_str.lower() == 'surf':
+            self.detector = cv2.xfeatures2d.SURF_create()
         self.cluster_k = cluster_k
         self.cluster = MiniBatchKMeans(n_clusters=cluster_k, init_size=3 * cluster_k, random_state=0, batch_size=6)
         self.features = []
