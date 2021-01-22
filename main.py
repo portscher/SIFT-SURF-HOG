@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-import os.path
-import time
-import sys
 import argparse
+import sys
+import time
 
+import cv2
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report, accuracy_score, make_scorer
@@ -14,8 +15,7 @@ from sklearn.model_selection import KFold
 
 import feature_extraction
 import utils
-
-from sift import SiftTransformer
+from detect import Transformer
 
 def classification_report_with_accuracy_score(y_true, y_pred):
     print(classification_report(y_true, y_pred)) # print classification report
@@ -25,7 +25,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("method", help="Method to use. Available: SIFT, SURF, HoG")
     parser.add_argument('-c','--classes', nargs='+', help='<Required> Which classes to load', required=True)
-    parser.add_argument('-k','--k', type=int, default=100, help='Define number of clusters. Recommended: 3 * len(classe)')
+    parser.add_argument('-k', '--k', type=int, default=100, help='Define number of clusters')
     parser.add_argument('-s','--splits', type=int, default=3, help='Define number of KFold splits')
     # insert more meta-parameters here
 
@@ -57,19 +57,18 @@ def main():
 
     feat = None
     if args.method.lower() == 'sift':
-        feat = SiftTransformer(args.k)
-    elif args.method.lower() == 'suft':
-        raise Exception('TODO', 'Not yet implemented')
-        feat = SiftTransformer(args.k)
+        feat = Transformer(args.k, cv2.SIFT_create)
+    elif args.method.lower() == 'surf':
+        feat = Transformer(args.k, cv2.xfeatures2d.SURF_create)
     elif args.method.lower() == 'hog':
         raise Exception('TODO', 'Not yet implemented')
-        feat = SiftTransformer(args.k)
+        feat = Transformer(args.k)
     else:
         raise Exception('No method', 'This method is not recognized')
 
     pipeline = Pipeline([
         ('feat', feat),
-        ('svm', LinearSVC())
+        ('svm', LinearSVC(max_iter=100000))  # ... set number of iterations higher than default (1000)
     ])
 
     if UseCrossVal:
@@ -94,6 +93,7 @@ def main():
         print(classification_report(y_test, predictions))
 
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

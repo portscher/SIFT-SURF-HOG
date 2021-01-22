@@ -1,16 +1,15 @@
-from sklearn.cluster import MiniBatchKMeans
-from sklearn.base import TransformerMixin, BaseEstimator
-
-import cv2
 import numpy as np
+from sklearn.base import TransformerMixin, BaseEstimator
+from sklearn.cluster import MiniBatchKMeans
 
-class SiftTransformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, cluster_k):
-        super(SiftTransformer, self).__init__()
-        self.sift = cv2.SIFT_create()
+class Transformer(BaseEstimator, TransformerMixin):
+
+    def __init__(self, cluster_k, create_detector):
+        super(Transformer, self).__init__()
+        self.detector = create_detector()
         self.cluster_k = cluster_k
-        self.cluster = MiniBatchKMeans(n_clusters=self.cluster_k, random_state=0, batch_size=6)
+        self.cluster = MiniBatchKMeans(n_clusters=cluster_k, init_size=3 * cluster_k, random_state=0, batch_size=6)
         self.features = []
 
     def fit(self, X, y=None, **kwargs):
@@ -24,7 +23,7 @@ class SiftTransformer(BaseEstimator, TransformerMixin):
         print("Identifying descriptors..")
         descriptors = []
         for img in X:
-            key, desc = self.sift.detectAndCompute(img, None)
+            key, desc = self.detector.detectAndCompute(img, None)
             descriptors.append(desc)
 
         descs = descriptors[0]
@@ -43,13 +42,13 @@ class SiftTransformer(BaseEstimator, TransformerMixin):
         """
         Compute histogram of X
         :param X: features
-        :return: list of tupple histogram
+        :return: list of tuple histogram
         """
 
         print("Calculating histograms for " + str(len(X)) + " items.")
         histo_all = []
         for img in X:
-            key, desc = self.sift.detectAndCompute(img, None)
+            key, desc = self.detector.detectAndCompute(img, None)
 
             histo = np.zeros(self.cluster_k)
             nkp = np.size(len(key))
@@ -57,7 +56,7 @@ class SiftTransformer(BaseEstimator, TransformerMixin):
             for d in desc:
                 idx = self.cluster.predict([d])
                 # instead of increasing each bin by one, add the normalized value
-                histo[idx] += 1/nkp
+                histo[idx] += 1 / nkp
 
             histo_all.append(histo)
 
@@ -78,14 +77,14 @@ class SiftTransformer(BaseEstimator, TransformerMixin):
         histo_all = []
 
         for img in images:
-            key, desc = self.sift.detectAndCompute(img, None)
+            key, desc = self.detector.detectAndCompute(img, None)
             histo = np.zeros(self.cluster_k)
             nkp = np.size(len(desc))
 
             for d in desc:
                 idx = self.cluster.predict([d])
                 # instead of increasing each bin by one, add the normalized value
-                histo[idx] += 1/nkp
+                histo[idx] += 1 / nkp
 
             histo_all.append(histo)
 
