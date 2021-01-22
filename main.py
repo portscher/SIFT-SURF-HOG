@@ -39,7 +39,7 @@ def main():
 
     # load images
     print("Loading classes " + ', '.join(args.classes) + "\n")
-    images = utils.load_images('./', args.classes)
+    images = utils.load_images('./img/', args.classes)
     X, Y = utils.separate_data(images)
 
     # extract features from training images
