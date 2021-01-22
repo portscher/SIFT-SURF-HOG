@@ -9,8 +9,8 @@ class SiftTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, cluster_k):
         super(SiftTransformer, self).__init__()
         self.sift = cv2.SIFT_create()
-        self.k = cluster_k
-        self.cluster = MiniBatchKMeans(n_clusters=cluster_k, random_state=0, batch_size=6)
+        self.cluster_k = cluster_k
+        self.cluster = MiniBatchKMeans(n_clusters=self.cluster_k, random_state=0, batch_size=6)
         self.features = []
 
     def fit(self, X, y=None, **kwargs):
@@ -51,7 +51,7 @@ class SiftTransformer(BaseEstimator, TransformerMixin):
         for img in X:
             key, desc = self.sift.detectAndCompute(img, None)
 
-            histo = np.zeros(self.k)
+            histo = np.zeros(self.cluster_k)
             nkp = np.size(len(key))
 
             for d in desc:
@@ -79,7 +79,7 @@ class SiftTransformer(BaseEstimator, TransformerMixin):
 
         for img in images:
             key, desc = self.sift.detectAndCompute(img, None)
-            histo = np.zeros(self.k)
+            histo = np.zeros(self.cluster_k)
             nkp = np.size(len(desc))
 
             for d in desc:
