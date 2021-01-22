@@ -46,8 +46,7 @@ def load_data(folders):
 
     return train_set, test_set
 
-
-def load_images(classes):
+def load_images(base, classes):
     """
     load all images of the given classes. each class corresponds to a folder in /img folder.
     :return: a list, containing key value pairs (class_id, image)
@@ -55,9 +54,9 @@ def load_images(classes):
 
     images = []
     for class_folder in classes:
-        image_set = os.listdir("img/" + class_folder)
+        image_set = os.listdir(base + "img/" + class_folder)
         labelled_images = [(load_image("img/" + os.path.join(class_folder, image)), class_folder)
-                           for image in image_set]
+                for image in image_set]
         images.extend(labelled_images)
 
     print("Loaded " + str(len(images)) + " images of the classes: " + ', '.join(classes))
