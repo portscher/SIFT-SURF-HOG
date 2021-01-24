@@ -50,7 +50,10 @@ We use a pipeline\footnote{https://scikit-learn.org/stable/modules/generated/skl
 In our case the transformers are the application of the respective feature extractor and finally the SVM.
 The SIFT and SURF transformers are initialized in the same manner: After the features have been extracted, they are clustered.
 In this step we used the MiniBatchKMeans clustering algorithm\footnote{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html}. We used the Elbow Method to approximate the ideal size for K.
-This approach works by simply calculating and plotting the distortions as a function of the number of clusters. Then the "elbow" of the graph - meaning the point in which the number of distortions starts to decrease too slowly to justify the additional cost of an increase in the number of clusters.
+This approach works by simply calculating and plotting the distortions as a function of the number of clusters. Then the "elbow" of the graph - meaning the point in which the number of distortions starts to decrease too slowly to justify the additional cost of an increase in the number of clusters. The resulting graph for SIFT can be seen on the following figure. On this base we chose the value 500. 
+\begin{center}
+  \includegraphics[scale=0.3]{img/kmeans-sift}
+\end{center}
 After having fitted the MiniBatchKMeans, the transformation begins and histograms are generated.
 The next step in the pipeline is the training of the SVM. We chose the LinearSVC algorithm provided by the \texttt{sklearn} library\footnote{https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html}.
 
