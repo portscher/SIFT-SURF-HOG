@@ -33,8 +33,7 @@ In general, feature extraction algorithms work in three steps\cite{bay2006}:
 
 \subsection{SIFT}
 \subsection{SURF}
-
-
+SURF is based on similar properties as SIFT but is - as the name already takes away - faster and more robust. Unlike SIFT, the SURF algorithm is currently still patented and can therefore only be used by including the \texttt{opencv\_contrib} package\footnote{https://github.com/opencv/opencv\_contrib} and allowing non-free algorithms.
 
 \subsection{HOG}
 
@@ -57,7 +56,19 @@ The image data we used stems from the Caltech-256 Image Set\footnote{http://www.
   \item The images are split into a training set (80\% of images per class) and a testing set (20\% of images).
 \end{itemize}
 
+\subsection{Pipeline}
+We use a pipeline\footnote{https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html} which sequentially applies a list of transforms and a final estimator.
+In our case the transformers are the application of the respective feature extractor and finally the SVM.
+The SIFT and SURF transformers are initialized in the same manner: After the features have been extracted, they are clustered.
+In this step we used the MiniBatchKMeans clustering algorithm\footnote{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html}. We used the Elbow Method to approximate the ideal size for K.
+This approach works by simply calculating and plotting the distortions as a function of the number of clusters. Then the "elbow" of the graph - meaning the point in which the number of distortions starts to decrease too slowly to justify the additional cost of an increase in the number of clusters.
+After having fitted the MiniBatchKMeans, the transformation begins and histograms are generated.
+The next step in the pipeline is the training of the SVM. We chose the LinearSVC algorithm provided by the \texttt{sklearn} library\footnote{https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html}.
+
+
 \section{Discussion of Results}
+In order to be able to evaluate our results we calculated the precision and recall and generated confusion matrices
+
 
 \bibliographystyle{unsrt}
 \bibliography{sources}

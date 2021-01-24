@@ -1,10 +1,11 @@
 __pycache__
-opencv/
-opencv_contrib/
 
-### LaTeX ###
-## Core latex/pdflatex auxiliary files:
+## Latex files:
 *.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.gz
 *.lof
 *.log
 *.lot
@@ -304,3 +305,6 @@ TSWLatexianTemp*
 .history
 .ionide
 .vscode/launch.json
+
+## Can be generated from .tex file
+*.pdf
