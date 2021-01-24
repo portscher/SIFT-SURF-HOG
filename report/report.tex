@@ -37,6 +37,17 @@ In general, feature extraction algorithms work in three steps\cite{bay2006}:
 
 
 \subsection{HOG}
+
+HOG stands for Histogram of Oriented Gradients and is a feature descriptor used in computer vision and image processing. Its purpose is to count the occurrence of gradient orientations in a given image. The first time HOG was described by Robert K. McConnell of Wayland Research Inc. in a patent application in 1986 without using the term. It has become more famous when Navneet Dalal and Bill Triggs presented their work on HOG descriptors in their 2005 published paper.
+
+\subsubsection{Functionality of HOG}
+
+HOG decomposes an image into small squared cells, computes a histogram of oriented gradients in each cell, normalizes the result using a block-wise pattern, and return a descriptor for each cell. Stacking the cells into a squared image region can be used as an image window descriptor for object detection, for example by means of an SVM.
+
+\subsubsection{Preprocessing}
+
+For using the HOG there are some recommended preparation steps for the provided data. Firstly, it's recommended to resize the image to a size of 64 pixels by 128 pixels for receiving the best results. This is because the standard implementation of the HOG, described in the above mentioned paper of Navneet Dalal and Bill Triggs, divides the image into 8 * 8 and 16 * 16 patches for extracting the features.
+
 \section{Implementation}
 \subsection{Data}
 The image data we used stems from the Caltech-256 Image Set\footnote{http://www.vision.caltech.edu/Image\_Datasets/Caltech256/, accessed on the 22nd of December 2020}, which consists of 256 sets of images of a certain class. We randomly selected 5 of these, namely: cactus, dice, raccoon, spaghetti and sushi. The preaparation of the image data was comprised of the following steps, which we implemented in the file \texttt{utils.py}:

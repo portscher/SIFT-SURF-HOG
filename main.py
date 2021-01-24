@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from hog import HogTransformer
 import os.path
 import time
 import sys
@@ -47,15 +48,14 @@ def main():
         raise Exception('TODO', 'Not yet implemented')
         feat = SiftTransformer(args.k)
     elif args.method.lower() == 'hog':
-        raise Exception('TODO', 'Not yet implemented')
-        feat = SiftTransformer(args.k)
+        feat = HogTransformer(args.k)
     else:
         raise Exception('No method', 'This method is not recognized')
 
 
     pipeline = Pipeline([
         ('feat', feat),
-        ('svm', LinearSVC())
+        ('svm', LinearSVC()),
     ])
 
     print("Training with " + str(len(X_train)) + " samples")
