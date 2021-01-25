@@ -1,25 +1,17 @@
-# object_recognition
+# Image Classification with SVM
 
-Set up:
+In this project we're comparing the image classification performance of SIFT (Scale-Invariant Feature Transform), SURF (Speeded-Up Robust Features) and HOG (Histogram of Gradients). For training and testing we're using images from the [Caltech-256 image dataset](http://www.vision.caltech.edu/Image_Datasets/Caltech256/).
+
+## Prerequisites:
+You'll need OpenCV and OpenCV Contrib 3.4.2.6 for Python:
 
 ```
-$ git clone https://github.com/opencv/opencv.git
-$ git clone https://github.com/opencv/opencv_contrib.git
- 
-$ cd opencv
-$ mkdir build && cd build
- 
-$ cmake -DCMAKE_BUILD_TYPE=Release \
-    -D OPENCV_ENABLE_NONFREE:BOOL=ON \
-    -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D BUILD_NEW_PYTHON_SUPPORT=ON \
-    -D BUILD_opencv_python3=ON \
-    -D HAVE_opencv_python3=ON \
-    -D PYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3 \
-    ..
- 
-$ make -j4
-$ sudo make install
+pip install opencv-python==3.4.2.16 opencv-contrib-python==3.4.2.16
 ```
 
+It's essential to use this version, since newer versions do not contain SIFT and SURF as they're patented.
+
+## Usage:
+```
+python main.py <sift/surf/hog> -c <image classes> -k <number of clusters>
+```
