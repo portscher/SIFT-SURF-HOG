@@ -12,20 +12,21 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 
-import feature_extraction
 import utils
 from detect import Transformer
 
+
 def classification_report_with_accuracy_score(y_true, y_pred):
-    print(classification_report(y_true, y_pred)) # print classification report
-    return accuracy_score(y_true, y_pred) # return accuracy score
+    print(classification_report(y_true, y_pred))  # print classification report
+    return accuracy_score(y_true, y_pred)  # return accuracy score
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("method", help="Method to use. Available: SIFT, SURF, HoG")
-    parser.add_argument('-c','--classes', nargs='+', help='<Required> Which classes to load', required=True)
+    parser.add_argument('-c', '--classes', nargs='+', help='<Required> Which classes to load', required=True)
     parser.add_argument('-k', '--k', type=int, default=100, help='Define number of clusters')
-    parser.add_argument('-s','--splits', type=int, default=3, help='Define number of KFold splits')
+    parser.add_argument('-s', '--splits', type=int, default=3, help='Define number of KFold splits')
     # insert more meta-parameters here
 
     args = parser.parse_args()
@@ -43,7 +44,7 @@ def main():
     X, Y = utils.separate_data(images)
 
     # extract features from training images
-    print("Using "+ args.method +" to extract features from the images..." + "\n")
+    print("Using " + args.method + " to extract features from the images..." + "\n")
 
     # TODO for now, only test_split
 
@@ -52,7 +53,7 @@ def main():
     if UseCrossVal:
         cv = KFold(n_splits=args.splits, random_state=1, shuffle=True)
     else:
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.4, random_state=0)
+        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
 
     feat = None
     if args.method.lower() == 'sift':
