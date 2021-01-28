@@ -14,12 +14,8 @@ class HogTransformer(BaseEstimator, TransformerMixin):
         super(HogTransformer, self).__init__()
         # Default values for the HoG according to the values given at the paper of Navneet Dalal and Bill Triggs.
         # https://hal.inria.fr/inria-00548512/document
-        self.orientations = 9
-        self.pixelsPerCells = (8, 8)
         self.cellsPerBlock = (2, 2)
-        self.BlockNorm = 'L2-Hys'
         self.TransformSqrt = True
-        self.FeatureVector = True
 
         self.cluster_k = cluster_k
         self.cluster = MiniBatchKMeans(n_clusters = cluster_k, init_size=3 * cluster_k, random_state = 0, batch_size = 6)
@@ -33,7 +29,8 @@ class HogTransformer(BaseEstimator, TransformerMixin):
 
         descriptors = []
         for img in self.prepareData(X):
-            fd = hog(img, self.orientations, self.pixelsPerCells, self.cellsPerBlock, self.BlockNorm, transform_sqrt=self.TransformSqrt, feature_vector=self.FeatureVector)
+            # we must only change the cells per block to (2, 2) and the transform sqrt to true to be conform with the paper.
+            fd = hog(img, cells_per_block=self.cellsPerBlock, transform_sqrt=self.TransformSqrt)
             descriptors.append(fd)
         
         print("Clustering data...")
@@ -46,34 +43,31 @@ class HogTransformer(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None, **kwargs):
         """
         Creates the histograms for the given data.
-        The HoG implementation of skimage returns the
-        feature descriptor of HoG. Therefore the feature descriptor
+        The HOG implementation of skimage returns the
+        feature descriptor of HOG. Therefore the feature descriptor
         is equal to the produced histogram of oriented gradients.
         """
         print("Calculating histograms for " + str(len(X)) + " items.")
         
         histograms = []
         for img in self.prepareData(X):
-            fd = hog(img, self.orientations, self.pixelsPerCells, self.cellsPerBlock, self.BlockNorm, transform_sqrt=self.TransformSqrt, feature_vector=self.FeatureVector)
+            fd = hog(img, cells_per_block=self.cellsPerBlock, transform_sqrt=self.TransformSqrt)
             histograms.append(fd)
         
         return histograms
     
     def prepareData(self, X):
         """
-        Prepares the data for the HoG transformer.
-        The images will be resized to a aspect ratio of 1 : 2 (height : width)
-        and will also be converted to gray images (no RGB colors).
-        These steps results in a better performance of the HoG feature, according to
+        Prepares the data for the HOG transformer.
+        The images will be resized to 64 by 128 pixels, according to the paper of Navneet Dalal and Bill Triggs.
+        This step results in a better performance of the HOG feature, according to
         the source https://learnopencv.com/histogram-of-oriented-gradients/
         """
         print("Prepare data for HoG")
 
         preparedData = []
         for img in X:
-            (height, _, _) = img.shape
-            resizedImage = cv2.resize(img, (height, height * 2))
-            preparedData.append(cv2.cvtColor(resizedImage, cv2.COLOR_BGR2GRAY))
+            preparedData.append(cv2.resize(img, (64, 128)))
 
         return preparedData
     
