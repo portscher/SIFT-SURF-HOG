@@ -13,9 +13,20 @@ class Transformer(BaseEstimator, TransformerMixin):
         self.detector_str = detector_str
 
         if detector_str.lower() == 'sift':
-            self.detector = cv2.SIFT_create()
+            self.detector = cv2.SIFT_create(
+                nfeatures=0,
+                nOctaveLayers=3,
+                contrastThreshold=0.04,
+                edgeThreshold=10,
+                sigma=1.6
+            )
         elif detector_str.lower() == 'surf':
-            self.detector = cv2.xfeatures2d.SURF_create()
+            self.detector = cv2.xfeatures2d.SURF_create(
+                hessianThreshold=100,
+                nOctaves=4,
+                nOctaveLayers=3,
+                extended=False,
+                upright=False)
         self.cluster_k = cluster_k
         self.cluster = MiniBatchKMeans(n_clusters=cluster_k, init_size=3 * cluster_k, random_state=0, batch_size=6)
         self.features = []
