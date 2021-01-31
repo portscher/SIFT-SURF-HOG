@@ -32,8 +32,13 @@ In general, feature extraction algorithms work in three steps\cite{bay2006}:
 \end{enumerate}
 
 \subsection{SIFT}
+
+
 \subsection{SURF}
-SURF is based on similar properties as SIFT but is - as the name already takes away - faster and more robust. Unlike SIFT, the SURF algorithm is currently still patented and can therefore only be used by including the \texttt{opencv\_contrib} package\footnote{https://github.com/opencv/opencv\_contrib} and allowing non-free algorithms.
+SURF is based on similar properties as SIFT but is - as the name already takes away - faster and more robust. In the detection phase, SURF approximates the Laplacian of Gaussian with a box filter, and a convolution with a box filter can can easily be calculated with the help of integral images, and can be parallelized for different scales.
+Another improvement is the use of the sign of the Laplacian for underlying interest points in the matching phase. Since it is already calculated during the detection phase, it comes at no additional cost, but speeds up the process by only comparing features if they have the same type of contrast\footnote{https://docs.opencv.org/3.4/df/dd2/tutorial\_py\_surf\_intro.html}.
+
+Unlike SIFT, the SURF algorithm is currently still patented and can therefore only be used by including the \texttt{opencv\_contrib} package\footnote{https://github.com/opencv/opencv\_contrib} and allowing non-free algorithms.
 
 \subsection{HOG}
 \section{Implementation}
