@@ -14,6 +14,7 @@ from sklearn.model_selection import KFold
 
 import utils
 from detect import Transformer
+import preprocess
 
 
 def classification_report_with_accuracy_score(y_true, y_pred):
@@ -67,6 +68,7 @@ def main():
         raise Exception('No method', 'This method is not recognized')
 
     pipeline = Pipeline([
+        ('preproc', preprocess.ImagePreparationTransformer()),
         ('feat', feat),
         ('svm', LinearSVC(max_iter=100000))  # ... set number of iterations higher than default (1000)
     ])

@@ -31,32 +31,6 @@ class Transformer(BaseEstimator, TransformerMixin):
         self.cluster = MiniBatchKMeans(n_clusters=cluster_k, init_size=3 * cluster_k, random_state=0, batch_size=6)
         self.features = []
 
-    # def determine_optimal_k(self, X):
-    #
-    #     descriptors = []
-    #     for img in X:
-    #         key, desc = self.detector.detectAndCompute(img, None)
-    #         descriptors.append(desc)
-    #
-    #     descs = descriptors[0]
-    #
-    #     for desc in descriptors[1:]:
-    #         descs = np.vstack((descs, desc))
-    #
-    #     distortions = []
-    #     K = range(100, 600, 50)
-    #     for k in K:
-    #         cluster = MiniBatchKMeans(n_clusters=k)
-    #         cluster.fit(descs)
-    #         distortions.append(cluster.inertia_)
-    #
-    #     plt.figure(figsize=(16, 8))
-    #     plt.plot(K, distortions, 'bx-')
-    #     plt.xlabel('k')
-    #     plt.ylabel('Distortion')
-    #     plt.title('The Elbow Method showing the optimal k')
-    #     plt.show()
-
     def fit(self, X, y=None, **kwargs):
         """
         Compute SIFT descriptors and learn clusters from data.
@@ -109,8 +83,6 @@ class Transformer(BaseEstimator, TransformerMixin):
 
     def fit_transform(self, X, y=None, **kwargs):
         print("fitting and transforming..")
-
-        # self.determine_optimal_k(X)
 
         self = self.fit(X, y)
         return self.transform(X, y)
