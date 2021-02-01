@@ -49,11 +49,11 @@ HOG decomposes an image into small squared cells, computes a histogram of orient
 
 \subsubsection{Preprocessing}
 
-For using the HOG there are some recommended preparation steps for the provided data. Firstly, it's recommended to resize the image to a size of 64 by 128 pixels. This is because the implementation of the HOG used in the above mentioned paper of Navneet Dalal and Bill Triggs \cite[p. 4]{Hog_article}, combines 8 by 8 pixels to a cell and combines in turn 2 cells to a 16 by 16 pixel block for the whole image.
+For using the HOG there is a recommended preparation step for the provided data. It's recommended to resize the image to a size of 64 by 128 pixels. This is because the implementation of the HOG used in the above mentioned paper of Navneet Dalal and Bill Triggs \cite[p. 4]{Hog_article}, combines 8 by 8 pixels to a cells, combines in turn 2 cells to a 16 by 16 pixel block and repeats this for the whole image.
 
 \subsubsection{Implementation}
 
-For implementing the HOG feature, we use the external library \href{https://scikit-image.org/}{scikit-image} for Python. The library itself offers a hog\footnote{\href{https://scikit-image.org/docs/dev/auto_examples/features_detection/plot_hog.html}{Documentation of hog method}} method which executes the HOG feature on the provided image. We only modified the default values of the scikit-image implementation by changing following values:
+For implementing the HOG feature, we use the external library \href{https://scikit-image.org/}{scikit-image} for Python. The library itself offers a HOG\footnote{\href{https://scikit-image.org/docs/dev/auto_examples/features_detection/plot_hog.html}{Documentation of hog method}} method which executes the HOG feature on the provided image. We only modified the default values of the scikit-image implementation by changing following values:
 \begin{itemize}
   \item The cells per block are set to 2 by 2 instead of 3 by 3. This has the effect, that the HOG feature only takes two cells for each block (16 pixels by 16 pixels each block) instead of three blocks (24 pixels by 24 pixels each block). With this change, we are more compliant with the paper of Navneet Dalal and Bill Triggs \cite[p. 4]{Hog_article}.
   \item Enabling square root transformation. This is not covered by the paper, but with this we achieved better results in comparison to the non enabled version.
