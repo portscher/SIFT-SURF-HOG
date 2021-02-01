@@ -3,18 +3,16 @@ import argparse
 import sys
 import time
 
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score, make_scorer
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import classification_report, accuracy_score, make_scorer
 from sklearn.svm import LinearSVC
-
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
 
 import utils
 from detect import Transformer
-import preprocess
+from preprocess import ImagePreparationTransformer
 
 
 def classification_report_with_accuracy_score(y_true, y_pred):
@@ -49,7 +47,7 @@ def main():
 
     # TODO for now, only test_split
 
-    print("using " + str(args.splits) + " splits")
+    print("Using " + str(args.splits) + " splits")
 
     if UseCrossVal:
         cv = KFold(n_splits=args.splits, random_state=1, shuffle=True)
@@ -68,7 +66,7 @@ def main():
         raise Exception('No method', 'This method is not recognized')
 
     pipeline = Pipeline([
-        ('preproc', preprocess.ImagePreparationTransformer()),
+        ('preproc', ImagePreparationTransformer()),
         ('feat', feat),
         ('svm', LinearSVC(max_iter=100000))  # ... set number of iterations higher than default (1000)
     ])

@@ -22,7 +22,7 @@ class Transformer(BaseEstimator, TransformerMixin):
             )
         elif detector_str.lower() == 'surf':
             self.detector = cv2.xfeatures2d.SURF_create(
-                hessianThreshold=100,
+                hessianThreshold=300,  # a threshold of 300 achieves the best results
                 nOctaves=4,
                 nOctaveLayers=3,
                 extended=False,
