@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+from hog import HogTransformer
+import os.path
+import time
+import sys
 import argparse
 import sys
 import time
@@ -60,8 +64,7 @@ def main():
     elif args.method.lower() == 'surf':
         feat = Transformer(args.k, args.method.lower())
     elif args.method.lower() == 'hog':
-        raise Exception('TODO', 'Not yet implemented')
-        feat = Transformer(args.k)
+        feat = HogTransformer(args.k)
     else:
         raise Exception('No method', 'This method is not recognized')
 
