@@ -21,7 +21,7 @@ class Transformer(BaseEstimator, TransformerMixin):
             edgeThreshold:
             sigma: 
             """
-            self.detector = cv2.SIFT_create(
+            self.detector = cv2.xfeatures2d.SIFT_create(
                 nfeatures=0,
                 nOctaveLayers=3,
                 contrastThreshold=0.04,

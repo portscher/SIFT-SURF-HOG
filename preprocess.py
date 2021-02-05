@@ -3,7 +3,10 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class ImagePreparationTransformer(BaseEstimator, TransformerMixin):
-
+    """
+    Transformer for the pre-procession of images:
+    Resizing, Conversion to grayscale, normalizing, application of Gaussian blur.
+    """
     def __init__(self):
         super(ImagePreparationTransformer, self).__init__()
 

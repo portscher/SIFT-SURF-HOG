@@ -26,18 +26,19 @@ class HogTransformer(BaseEstimator, TransformerMixin):
         """
         Learns the cluster by computing HoG feature descriptors.
         """
-        print("Identify descriptors...");
-
-        descriptors = []
-        for img in self.prepareData(X):
-            # we must only change the cells per block to (2, 2) and the transform sqrt to true to be conform with the paper.
-            fd = hog(img, cells_per_block=self.cellsPerBlock, block_norm='L2-Hys', transform_sqrt=self.TransformSqrt)
-            descriptors.append(fd)
-
-        print("Clustering data...")
-        self.cluster.fit(descriptors)
-
-        print("Clustered " + str(len(self.cluster.cluster_centers_)) + " centroids")
+        # print("Identify descriptors...")
+        #
+        # descriptors = []
+        # for img in self.prepare_data(X):
+        #     # we must only change the cells per block to (2, 2) and the transform sqrt to true to be conform with the
+        #     # paper.
+        #     fd = hog(img, cells_per_block=self.cellsPerBlock, block_norm='L2-Hys', transform_sqrt=self.TransformSqrt)
+        #     descriptors.append(fd)
+        #
+        # print("Clustering data...")
+        # self.cluster.fit(descriptors)
+        #
+        # print("Clustered " + str(len(self.cluster.cluster_centers_)) + " centroids")
 
         return self
 
@@ -51,13 +52,13 @@ class HogTransformer(BaseEstimator, TransformerMixin):
         print("Calculating histograms for " + str(len(X)) + " items.")
 
         histograms = []
-        for img in self.prepareData(X):
+        for img in self.prepare_data(X):
             fd = hog(img, cells_per_block=self.cellsPerBlock, block_norm='L2-Hys', transform_sqrt=self.TransformSqrt)
             histograms.append(fd)
 
         return histograms
 
-    def prepareData(self, X):
+    def prepare_data(self, X):
         """
         Prepares the data for the HOG transformer.
         The images will be resized to 64 by 128 pixels, according to the paper of Navneet Dalal and Bill Triggs.
@@ -73,7 +74,7 @@ class HogTransformer(BaseEstimator, TransformerMixin):
         return preparedData
 
     def fit_transform(self, X, y=None, **kwargs):
-        print("fit and transforming...")
+        print("fitting and transforming...")
 
         self = self.fit(X, y)
         return self.transform(X, y)

@@ -5,10 +5,10 @@ import cv2
 
 def load_images(base, classes):
     """
-    load all images of the given classes. each class corresponds to a folder in /img folder.
+    :param base: path to the folder containing the images
+    :param classes: names the the folders
     :return: a list, containing key value pairs (class_id, image)
     """
-
     images = []
     for class_folder in classes:
         image_set = os.listdir(base + class_folder)
@@ -24,7 +24,7 @@ def load_images(base, classes):
 def separate_data(images):
     """
     :param images: a list tuple (class_id, image)
-    :return: X and Y
+    :return: list of data and list of labels
     """
     return zip(*images)
 
