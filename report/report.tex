@@ -21,7 +21,7 @@
 \maketitle
 
 \section{Introduction}
-For this project we implemented an image classifier using three different feature extraction approaches: Scale-invariant feature transform (SIFT), Speeded up robust features (SURF) and Histogram of Gradients (HOG). First, we prepared an image dataset containing five different image classes, each comprising training and testing data. After extracting features using the above algorithms, we trained a Support-Vector Machine (SVM) and testetd, how well it was able to classify images.
+For this project we implemented an image classifier using three different feature extraction approaches: Scale-invariant feature transform (SIFT), Speeded-up robust features (SURF) and Histogram of Gradients (HOG). First, we prepared an image dataset containing five different image classes, each comprising training and testing data. After extracting features using the above algorithms, we trained a Support-Vector Machine (SVM) and tested, how well it was able to classify images.
 \section{Approaches}
 In the following section we will shortly explain the functionality of the feature extraction algorithms we applied to the dataset - namely SIFT, SURF and HOG.
 In general, feature extraction algorithms work in three steps \cite{bay2006}:
@@ -65,7 +65,7 @@ We use a pipeline\footnote{https://scikit-learn.org/stable/modules/generated/skl
 \subsubsection{Pre-processing of images}
 The image data we used stems from the Caltech-256 Image Set\footnote{http://www.vision.caltech.edu/Image\_Datasets/Caltech256/, accessed on the 22nd of December 2020}, which consists of 256 sets of images of a certain class. We randomly selected 5 of these, namely: cactus, dice, raccoon, spaghetti and sushi. The preparation of the image data was comprised of the following steps, which we implemented in the \texttt{ImagePreparationTransformer}:
 \begin{itemize}
-  \item All images were resized to the same size, converted to grayscale and normalized (which removes noise from the image).
+  \item All images were resized to the same size, converted to gray-scale and normalized (which removes noise from the image).
   \item All images are associated with a label (their image class).
   \item The images are split into a training set (80\% of images per class) and a testing set (20\% of images).
 \end{itemize}
@@ -74,7 +74,7 @@ The image data we used stems from the Caltech-256 Image Set\footnote{http://www.
 
 The SIFT and SURF transformers are initialized in the same manner: After the features have been extracted, they are clustered.
 In this step we used the MiniBatchKMeans clustering algorithm\footnote{https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html}. We used the Elbow Method to approximate the ideal size for K.
-This approach works by simply calculating and plotting the distortions as a function of the number of clusters. Then the "elbow" of the graph - meaning the point in which the number of distortions starts to decrease too slowly to justify the additional cost of an increase in the number of clusters. The resulting graph for SIFT can be seen on the following figure. On this base we chose the value 500.
+This approach works by simply calculating and plotting the distortions as a function of the number of clusters. Then the "elbow" of the graph - meaning the point in which the number of distortions starts to decrease too slowly to justify the additional cost of an increase in the number of clusters. The resulting graph for SIFT can be seen on the following figure. On this base we chose the value 300.
 \begin{center}
   \includegraphics[scale=0.3]{img/kmeans-sift}
 \end{center}

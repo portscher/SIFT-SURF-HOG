@@ -4,22 +4,20 @@ from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.cluster import MiniBatchKMeans
 
 
-class Transformer(BaseEstimator, TransformerMixin):
+class SiftSurfTransformer(BaseEstimator, TransformerMixin):
 
     def __init__(self, cluster_k, detector_str):
-        super(Transformer, self).__init__()
+        super(SiftSurfTransformer, self).__init__()
 
-        # we need this dummy variable!
         self.detector_str = detector_str
 
         if detector_str.lower() == 'sift':
-            # TODO: comment on sift parameters
             """ 
-            nFeatures:
-            nOctaveLayers: Number of octave layers within each octave
-            contrastThreshold:
-            edgeThreshold:
-            sigma: 
+            nFeatures: The number of best features to retain
+            nOctaveLayers: Number of octave layers within each octave. 3 is the value used in D. Lowe paper
+            contrastThreshold: The larger the threshold, the fewer features are produced by the detector.
+            edgeThreshold: The threshold used to filter out edge-like features
+            sigma: The sigma of the Gaussian applied to the input image at the octave #0
             """
             self.detector = cv2.xfeatures2d.SIFT_create(
                 nfeatures=0,

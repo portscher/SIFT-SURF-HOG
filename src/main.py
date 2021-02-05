@@ -11,7 +11,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 
 import utils
-from detect import Transformer
+from sift_surf import SiftSurfTransformer
 from hog import HogTransformer
 from preprocess import ImagePreparationTransformer
 
@@ -27,8 +27,8 @@ def main():
     parser.add_argument('-c', '--classes', nargs='+', help='<Required> Which classes to load', required=True)
     parser.add_argument('-k', '--k', type=int, default=100, help='Define number of clusters')
     parser.add_argument('-s', '--splits', type=int, default=3, help='Define number of KFold splits')
-    parser.add_argument('-cval', '--crossval', type=str2bool, nargs='?', const=True, default=True, help='Set True for using cross validation')
-    # insert more meta-parameters here
+    parser.add_argument('-cval', '--crossval', type=str2bool, nargs='?', const=True, default=True,
+                        help='Set True for using cross validation')
 
     args = parser.parse_args()
 
@@ -38,7 +38,7 @@ def main():
 
     # load images
     print("Loading classes " + ', '.join(args.classes) + "\n")
-    images = utils.load_images('./img/', args.classes)
+    images = utils.load_images('../img/', args.classes)
     X, Y = utils.separate_data(images)
 
     # extract features from training images
@@ -54,11 +54,11 @@ def main():
 
     feat = None
     if args.method.lower() == 'sift':
-        feat = Transformer(args.k, args.method.lower())
+        feat = SiftSurfTransformer(args.k, args.method.lower())
     elif args.method.lower() == 'surf':
-        feat = Transformer(args.k, args.method.lower())
+        feat = SiftSurfTransformer(args.k, args.method.lower())
     elif args.method.lower() == 'hog':
-        feat = HogTransformer(args.k)
+        feat = HogTransformer()
     else:
         raise Exception('No method', 'This method is not recognized')
 
@@ -91,7 +91,13 @@ def main():
 
     sys.exit(0)
 
+
 def str2bool(v):
+    """
+    Helper function to parse different expressions to True or False
+    :param v: value
+    :return: True or False, depending on the input
+    """
     if isinstance(v, bool):
         return v
     if v.lower() in ('yes', 'true', 't', 'y', '1'):
