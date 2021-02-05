@@ -1,22 +1,18 @@
-\UseRawInputEncoding
 \documentclass{scrartcl}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+
 \usepackage[english]{babel}
 \usepackage{lmodern}
 \usepackage{color}
 \usepackage[babel]{csquotes}
 \usepackage{graphicx}
 \usepackage{enumitem}
-\usepackage{lscape}
-\usepackage{booktabs}
-\usepackage{hyperref}
 \usepackage{float}
-\usepackage{xcolor}
-\usepackage[backend=biber]{biblatex}
-\addbibresource{sources.bib}
 
 \setcounter{secnumdepth}{0}
+
+\bibliographystyle{unsrt}
+
+\newcommand{\rulesep}{\unskip\ \vrule\ }
 
 \title{Image classification with SVM}
 \author{Andrea Portscher, Juan Pablo Stumpf, Philip Wille}
@@ -36,6 +32,70 @@ In general, feature extraction algorithms work in three steps \cite{bay2006}:
 \end{enumerate}
 
 \subsection{SIFT}
+SIFT is a feature detection algorithm, which is invariant to similarity transformations and partially invariant to affine transformations. The algorithm consists of five steps:
+
+\begin{enumerate}
+    \item Scale space
+
+        This step ensures the scale invariance, by blurring the image on different scales. This is similar a taking a photo at different distances. The blurring is done using the Gaussian convolution and on each step, the standard deviation is increased.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.6\linewidth]{img/sift1}
+            \caption{Image blurred on different scales}%
+            \label{fig:sift1}
+        \end{figure}
+
+        We can depict on the Figure~\ref{fig:sift1} how the image is once blurred (orange arrow), then the result is blurred again with a higher standard deviation (green arrow). The last image on the row is than downsampled, and the blurring begins again. This process is then done until the image is small enought.
+
+    \item Extrema detection
+
+        In this step, we look for pixel extremas by calculating the difference of Gaussians on the scale space. Then, the pixels are compared to their 26 neightbors, as we can see on Figure~\ref{fig:sift2}
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.5\linewidth]{img/sift2}
+            \caption{Pixel neighborhood}%
+            \label{fig:sift2}
+        \end{figure}
+
+    \item Keypoint localization
+
+        Extremas lying on edges aren't good candidates, so they are removed. Also points with low contrast are discarded. On Figure~\ref{fig:sift3} we can appreciate the found extremas (left side) and the remaining extremas (right side).
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.4\linewidth]{img/sift3a}
+            \rulesep
+            \includegraphics[width=0.4\linewidth]{img/sift3b}
+            \caption{Calculated extremas}%
+            \label{fig:sift3}
+        \end{figure}
+
+    \item Orientation assignment
+
+        Now the gradient magnitude and orientation is calculated for each sample. A orientation histogram is created.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.4\linewidth]{img/sift4}
+            \caption{Orientation histogram}%
+            \label{fig:sift4}
+        \end{figure}
+
+        The left image on Figure~\ref{fig:sift4} depicts the dominant orientation, and the right image is the belonging histogram.
+
+    \item Keypoint descriptor
+
+        Finally, sixteen new histograms are calculated for each point near the center of the key point. The descriptor is composed of $4 \times 4 \times 8=128$ integers which is then our feature.
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.2\linewidth]{img/sift5}
+            \caption{Final descriptor}%
+            \label{fig:sift5}
+        \end{figure}
+\end{enumerate}
 
 
 \subsection{SURF}
@@ -80,6 +140,6 @@ In order to be able to evaluate our results we calculated metrics such as precis
 Furthermore, we used cross-validation. We checked the results for 2, 3, 4 and 5 image classes.
 Naturally, all of the algorithms showed the best results with only 2 image classes and their reliability decreased with a rsing number of classes.
 
-\printbibliography
+\bibliography{sources}
 
 \end{document}
