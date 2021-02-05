@@ -1,8 +1,6 @@
-from skimage.feature import hog
-from sklearn.cluster import MiniBatchKMeans
-from sklearn.base import TransformerMixin, BaseEstimator
-
 import cv2
+from skimage.feature import hog
+from sklearn.base import TransformerMixin, BaseEstimator
 
 
 class HogTransformer(BaseEstimator, TransformerMixin):
@@ -18,28 +16,8 @@ class HogTransformer(BaseEstimator, TransformerMixin):
         self.cellsPerBlock = (2, 2)
         self.TransformSqrt = True
 
-        self.cluster_k = cluster_k
-        self.cluster = MiniBatchKMeans(n_clusters=cluster_k, init_size=3 * cluster_k, random_state=0, batch_size=6)
-        self.features = []
-
-    def fit(self, X, y=None, **kwargs):
-        """
-        Learns the cluster by computing HoG feature descriptors.
-        """
-        # print("Identify descriptors...")
-        #
-        # descriptors = []
-        # for img in self.prepare_data(X):
-        #     # we must only change the cells per block to (2, 2) and the transform sqrt to true to be conform with the
-        #     # paper.
-        #     fd = hog(img, cells_per_block=self.cellsPerBlock, block_norm='L2-Hys', transform_sqrt=self.TransformSqrt)
-        #     descriptors.append(fd)
-        #
-        # print("Clustering data...")
-        # self.cluster.fit(descriptors)
-        #
-        # print("Clustered " + str(len(self.cluster.cluster_centers_)) + " centroids")
-
+    def fit(self, X, y=None):
+        """returns itself"""
         return self
 
     def transform(self, X, y=None, **kwargs):
@@ -74,7 +52,6 @@ class HogTransformer(BaseEstimator, TransformerMixin):
         return preparedData
 
     def fit_transform(self, X, y=None, **kwargs):
-        print("fitting and transforming...")
+        print("transforming...")
 
-        self = self.fit(X, y)
         return self.transform(X, y)
