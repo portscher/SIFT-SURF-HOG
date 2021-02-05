@@ -27,7 +27,7 @@ def main():
     parser.add_argument('-c', '--classes', nargs='+', help='<Required> Which classes to load', required=True)
     parser.add_argument('-k', '--k', type=int, default=100, help='Define number of clusters')
     parser.add_argument('-s', '--splits', type=int, default=3, help='Define number of KFold splits')
-    parser.add_argument('-cval', '--crossval', type=bool, default=True, help='Set True for using cross validation')
+    parser.add_argument('-cval', '--crossval', type=str2bool, nargs='?', const=True, default=True, help='Set True for using cross validation')
     # insert more meta-parameters here
 
     args = parser.parse_args()
@@ -90,6 +90,16 @@ def main():
         print(classification_report(y_test, predictions))
 
     sys.exit(0)
+
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 
 if __name__ == "__main__":
