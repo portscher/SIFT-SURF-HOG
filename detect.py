@@ -66,7 +66,7 @@ class Transformer(BaseEstimator, TransformerMixin):
             descs = np.vstack((descs, desc))
 
         print("Clustering data..")
-        self.cluster.fit(descs)
+        self.cluster.fit(descs.astype(np.float))
 
         print("Clustered " + str(len(self.cluster.cluster_centers_)) + " centroids")
 
