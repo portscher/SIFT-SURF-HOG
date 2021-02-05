@@ -2,6 +2,12 @@
 
 In this project we're comparing the image classification performance of SIFT (Scale-Invariant Feature Transform), SURF (Speeded-Up Robust Features) and HOG (Histogram of Gradients). For training and testing we're using images from the [Caltech-256 image dataset](http://www.vision.caltech.edu/Image_Datasets/Caltech256/).
 
+## Contents
+- img: Contains the training data
+- matrices: Contains the training and test matrices with the images, and the features they contain
+- report.pdf
+- 
+
 ## Prerequisites:
 You'll need OpenCV and OpenCV Contrib 3.4.2.6 for Python:
 
@@ -21,3 +27,4 @@ It's essential to use this version, since newer versions do not contain SIFT and
 ```
 python main.py <sift/surf/hog> -c <image classes> -k <number of clusters> -s <number of splits> -cval <True for using CrossValidation>
 ```
+

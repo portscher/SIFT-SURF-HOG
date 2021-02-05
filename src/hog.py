@@ -9,7 +9,7 @@ class HogTransformer(BaseEstimator, TransformerMixin):
     and computing histograms of oriented gradients.
     """
 
-    def __init__(self, cluster_k):
+    def __init__(self):
         super(HogTransformer, self).__init__()
         # Default values for the HoG according to the values given at the paper of Navneet Dalal and Bill Triggs.
         # https://hal.inria.fr/inria-00548512/document
