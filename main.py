@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-from hog import HogTransformer
-import os.path
-import time
-import sys
 import argparse
 import sys
 import time
@@ -16,6 +12,7 @@ from sklearn.svm import LinearSVC
 
 import utils
 from detect import Transformer
+from hog import HogTransformer
 from preprocess import ImagePreparationTransformer
 
 
@@ -30,12 +27,10 @@ def main():
     parser.add_argument('-c', '--classes', nargs='+', help='<Required> Which classes to load', required=True)
     parser.add_argument('-k', '--k', type=int, default=100, help='Define number of clusters')
     parser.add_argument('-s', '--splits', type=int, default=3, help='Define number of KFold splits')
+    parser.add_argument('-cval', '--crossval', type=bool, default=True, help='Set True for using cross validation')
     # insert more meta-parameters here
 
     args = parser.parse_args()
-
-    # TODO leave this in False. a bug still somewhere..
-    UseCrossVal = True
 
     if not args.method:
         parser.print_help()
@@ -48,10 +43,9 @@ def main():
 
     # extract features from training images
     print("Using " + args.method + " to extract features from the images..." + "\n")
-
-    # TODO for now, only test_split
-
     print("Using " + str(args.splits) + " splits")
+
+    UseCrossVal = args.crossval
 
     if UseCrossVal:
         cv = KFold(n_splits=args.splits, random_state=1, shuffle=True)

@@ -13,6 +13,14 @@ class Transformer(BaseEstimator, TransformerMixin):
         self.detector_str = detector_str
 
         if detector_str.lower() == 'sift':
+            # TODO: comment on sift parameters
+            """ 
+            nFeatures:
+            nOctaveLayers: Number of octave layers within each octave
+            contrastThreshold:
+            edgeThreshold:
+            sigma: 
+            """
             self.detector = cv2.SIFT_create(
                 nfeatures=0,
                 nOctaveLayers=3,
@@ -21,8 +29,15 @@ class Transformer(BaseEstimator, TransformerMixin):
                 sigma=1.6
             )
         elif detector_str.lower() == 'surf':
+            """
+            hessianThreshold: set to 300, has shown to deliver the best results/execution time ratio
+            nOctaves: Number of pyramid octaves the keypoint detector will use
+            nOctaveLayers: Number of octave layers within each octave
+            extended: Extended descriptor flag, set to 
+            upright: False, since the features may have various orientations
+            """
             self.detector = cv2.xfeatures2d.SURF_create(
-                hessianThreshold=300,  # a threshold of 300 achieves the best results
+                hessianThreshold=300,
                 nOctaves=4,
                 nOctaveLayers=3,
                 extended=False,
