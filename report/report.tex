@@ -46,11 +46,11 @@ SIFT is a feature detection algorithm, which is invariant to similarity transfor
             \label{fig:sift1}
         \end{figure}
 
-        We can depict on the Figure~\ref{fig:sift1} how the image is once blurred (orange arrow), then the result is blurred again with a higher standard deviation (green arrow). The last image on the row is than downsampled, and the blurring begins again. This process is then done until the image is small enought.
+        We can depict on the Figure~\ref{fig:sift1} how the image is once blurred (orange arrow), then the result is blurred again with a higher standard deviation (green arrow). The last image on the row is then downsampled, and the blurring begins again. This process is repeated until the image is small enough.
 
     \item Extrema detection
 
-        In this step, we look for pixel extremas by calculating the difference of Gaussians on the scale space. Then, the pixels are compared to their 26 neightbors, as we can see on Figure~\ref{fig:sift2}
+        In this step, we look for pixel extrema by calculating the difference of Gaussians on the scale space. Then, the pixels are compared to their 26 neighbours, as we can see on Figure~\ref{fig:sift2}
 
         \begin{figure}[H]
             \centering
@@ -61,7 +61,7 @@ SIFT is a feature detection algorithm, which is invariant to similarity transfor
 
     \item Keypoint localization
 
-        Extremas lying on edges aren't good candidates, so they are removed. Also points with low contrast are discarded. On Figure~\ref{fig:sift3} we can appreciate the found extremas (left side) and the remaining extremas (right side).
+        Extrema localted on edges are not good candidates, so they are removed. Also points with low contrast are discarded. Figure~\ref{fig:sift3} shows the found extrema (left side) and the remaining extrema (right side).
 
         \begin{figure}[H]
             \centering
@@ -83,7 +83,7 @@ SIFT is a feature detection algorithm, which is invariant to similarity transfor
             \label{fig:sift4}
         \end{figure}
 
-        The left image on Figure~\ref{fig:sift4} depicts the dominant orientation, and the right image is the belonging histogram.
+        The left image on Figure~\ref{fig:sift4} depicts the dominant orientation, and the right image is the respective histogram.
 
     \item Keypoint descriptor
 
@@ -106,7 +106,7 @@ Unlike SIFT, the SURF algorithm is currently still patented and can therefore on
 
 \subsection{HOG}
 
-The purpose of Histogram of Gradients (shortly HOG) is to count the occurrence of gradient orientations in a given image. The first time HOG was described by Robert K. McConnell of Wayland Research Inc. in a patent application in 1986 without using the term. It has become more famous when Navneet Dalal and Bill Triggs \cite{Hog_article} presented their work on HOG descriptors in their 2005 published paper.
+The purpose of Histogram of Gradients (shortly HOG) is used to count the occurrence of gradient orientations in a given image. The first time HOG was described by Robert K. McConnell of Wayland Research Inc. in a patent application in 1986 without using the term. It has become more famous when Navneet Dalal and Bill Triggs \cite{Hog_article} presented their work on HOG descriptors in their 2005 paper.
 
 \subsubsection{Functionality of HOG}
 
