@@ -5,8 +5,7 @@ In this project we're comparing the image classification performance of SIFT (Sc
 ## Contents
 - img: Contains the training data
 - matrices: Contains the training and test matrices with the images, and the features they contain
-- report.pdf
-- 
+- src: Contains the source code
 
 ## Prerequisites:
 You'll need OpenCV and OpenCV Contrib 3.4.2.6 for Python:
